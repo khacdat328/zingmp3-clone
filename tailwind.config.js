@@ -15,11 +15,14 @@ module.exports = {
 				popper: "0 2px 5px rgb( 0 0 0 / 0.2)",
 			},
 			colors: {
-				primary: "#FFFFFF",
-				secondary: "#ffffff80",
-				alpha: "#ffffff1a",
+				'layout-bg': "#170f23",
+				"purplePrimary": "#9b4de0",
+				'primary': "#FFFFFF",
+				'secondary': "#ffffff80",
+				'alpha': "#ffffff1a",
 				"link-hover": "#c273ed",
-				primaryBg: "#34224f",
+				'primaryBg': "#34224f",
+				'player-bg': "#130c1c"
 			},
 		},
 	},

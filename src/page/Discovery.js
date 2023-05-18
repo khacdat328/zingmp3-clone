@@ -1,55 +1,103 @@
 import { memo, useEffect, useState } from "react"
-import * as getSongs from "~/ApiService/Songs"
-import * as getPlayList from "~/ApiService/PLayList"
-import * as getArtists from "~/ApiService/Artists"
 import Section from "~/components/Section"
-import ArtistsContainer from "~/components/List/Artists"
-import SliderContainer from "~/components/SwiperSlider/SliderContainer"
+import BannerSlider from "~/components/SwiperSlider/BannerSlider"
 import NewRelease from "~/components/Section/Section Content"
-import PlaylistsContainer from "~/components/List/Playlists/PlaylistsContainer"
+import PlaylistBanner from "~/components/List/Playlists/PlaylistBanner"
 
 import { useSelector, useDispatch } from "react-redux"
-import { homepageData } from "~/redux/selector"
-import { getNewReleaseSongs } from "~/redux/slice/songSlice"
-import { getArtist } from "~/redux/slice/artistSlice"
-import { getChillAlbums } from "~/redux/slice/albumSlice"
+import { HomeDataSelector } from "~/redux/selector/homeSelector"
+import { getHomeData } from "~/redux/slice/HomeDataSlice"
+import Spinner from "~/components/Loading/Spinner"
+import Banner from "~/components/Banner"
+
 // NOTE: test data
 function Discovery() {
 	const dispatch = useDispatch()
-	const {song, album, artist} = useSelector(homepageData)
-	console.log({song, album, artist})
-	const [playlist, setPlayList] = useState([])
-	const [newSongList, setNewSongList] = useState([])
-	const [artistList, setArtistList] = useState([])
+	const { status, homeData } = useSelector(HomeDataSelector)
+	const {
+		banner,
+		new_release,
+		playlist: chillPlaylist,
+		playlist_hEditorTheme2: weekEndPlaylist,
+		playlist_hArtistTheme: trendingArtist,
+		newReleaseChart,
+		weekChart,
+		playlist_h100: top100Playlist,
+		playlist_hAlbum: albumHot,
+		livestream,
+	} = homeData
 
-	const FetchData = () => {
-		dispatch(getNewReleaseSongs())
-		dispatch(getChillAlbums())
-		dispatch(getArtist())
-	}
 	useEffect(() => {
-		FetchData()
+		dispatch(getHomeData())
 	}, [])
-	// console.log("render")
-
-	// const BannerData = playlist.filter((item, index) => index < 6)
 	return (
-		<div className="">
-			<SliderContainer data={playlist} />
+		<>
+			{!status ? (
+				<Spinner />
+			) : (
+				<div className="">
+					<BannerSlider
+						isBanner={true}
+						data={banner}
+						slidesPerGroup={1}
+						className="pt-8 -mx-3.5"
+					/>
 
-			<Section title={"Mới phát hành"} seeAll={false}>
-				<NewRelease data={song} />
-			</Section>
+					<Section title={new_release.title} seeAll={false}>
+						<NewRelease data={new_release} />
+					</Section>
 
-			<Section title={"Chill"} seeAll={false}>
-				<PlaylistsContainer data={album.slice(0, 5)} />
-			</Section>
+					<Section title={chillPlaylist.title} seeAll={false}>
+						<PlaylistBanner data={chillPlaylist.items} />
+					</Section>
 
-			<Section title={"BXH Nhạc mới"} seeAll={false}>
-				<PlaylistsContainer data={album.slice(0, 5)} />
-			</Section>
-			<ArtistsContainer data={artist} />
-		</div>
+					<Section title={weekEndPlaylist.title}>
+						<PlaylistBanner data={weekEndPlaylist.items} />
+					</Section>
+
+					<Section>
+						<PlaylistBanner data={trendingArtist.items} />
+					</Section>
+
+					<Section title={newReleaseChart.title}>
+						<BannerSlider
+							speed={200}
+							isBanner={false}
+							isNavigation={true}
+							slidesPerGroup={3}
+							data={newReleaseChart}
+							seeAllSlide={true}
+							className="-mx-3.5"
+						/>
+					</Section>
+
+					<Section title={weekChart.title} className="mt-7 pt-10 -mb-7">
+						<Banner data={weekChart.items} />
+					</Section>
+
+					<Section title={top100Playlist.title}>
+						<PlaylistBanner
+							data={top100Playlist.items}
+							hasArtistList={true}
+						/>
+					</Section>
+
+					<Section title={albumHot.title}>
+						<PlaylistBanner data={albumHot.items} hasArtistList={true} />
+					</Section>
+
+					<Section title={livestream.title}>
+						<BannerSlider
+							data={livestream}
+							isLivestream={true}
+							slidesPerGroup={3}
+							slidesPerView={7}
+							isNavigation={true}
+						/>
+					</Section>
+				</div>
+			)}
+		</>
 	)
 }
 export default memo(Discovery)

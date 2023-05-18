@@ -10,12 +10,14 @@ import {
 import { BsArrow90DegLeft } from "react-icons/bs"
 import { TbShare3, TbLink } from "react-icons/tb"
 import Tippy from "@tippyjs/react/headless"
-import { baseURL } from "~/utils/httpRequest"
 import Image from "~/components/Image"
 import Popper from "~/components/Popper/Popper"
 import SongDetail from "./SongDetail"
+import { Link } from "react-router-dom"
+import { Fragment } from "react"
+import { faHeadphones } from "@fortawesome/free-solid-svg-icons"
 
-function SongMenu({ data }) {
+function SongMenu({ data, detailData }) {
 	const listMenus = [
 		{
 			icon: (
@@ -58,17 +60,23 @@ function SongMenu({ data }) {
 	const renderSongDetail = () => {
 		return (
 			<Popper>
-				<SongDetail data={data} />
+				<SongDetail data={detailData} />
 			</Popper>
 		)
 	}
 	return (
 		<div className="song-menu w-[280px]">
 			<div className="relative">
-				<Tippy interactive render={renderSongDetail}  placement='right-start' offset={[-10,-12]} appendTo={document.getElementById("portal")}>
+				<Tippy
+					interactive
+					render={renderSongDetail}
+					placement="right-start"
+					offset={[-10, -12]}
+					appendTo={document.getElementById("portal")}>
 					<div className="flex items-center pt-[15px] px-[15px]">
 						<Image
-							src={`${baseURL}/${data.songImg}`}
+							src={data.thumbnailM}
+							alt={data.alias}
 							className="square-40 rounded-[4px] mr-2.5 bg-white"
 						/>
 						<div className="flex-1 overflow-hidden">
@@ -76,16 +84,22 @@ function SongMenu({ data }) {
 								href="#"
 								className="text-sm text-primary hover:text-link-hover font-medium leading-tight">
 								<span className="block w-full overflow-hidden text-ellipsis whitespace-nowrap">
-									{data.songName}
+									{data.title}
 								</span>
 							</a>
-							<div className="flex justify-start text-[12px] leading-[15px] text-[#a0a0a0]">
-								<h3 className="mt-0.5">
-									<a
-										href="#"
-										className="text-secondary hover:text-link-hover hover:underline">
-										{data.artistName}
-									</a>
+							<div className="flex justify-start text-[12px] leading-[15px] text-[#a0a0a0] ">
+								<h3 className="mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
+									{data.artists.map((artist, index) => (
+										<Fragment key={index}>
+											{index ? ", " : ""}
+											<Link
+												key={index}
+												href="#"
+												className="text-secondary hover:text-link-hover hover:underline">
+												{artist.name}
+											</Link>
+										</Fragment>
+									))}
 								</h3>
 							</div>
 						</div>

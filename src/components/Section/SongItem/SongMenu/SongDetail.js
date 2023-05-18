@@ -1,33 +1,67 @@
-import { MdLabel } from "react-icons/md"
+import { Fragment } from "react"
+import DetailInfor from "./DetailInfor"
 
 function SongDetail({ data }) {
-	const detailLists = [
-		{ labels: "Nghệ sĩ", content: data.artistName },
-		{ labels: "Album", content: data.Album },
-		{ labels: "Sáng tác", content: data.creator },
-		{ labels: "Thể loại", content: data.category },
-	]
 	return (
 		<div className="w-[230px] py-2.5 bg-primaryBg">
 			<div className="p-[15px]">
-				{detailLists.map((detailItem, index) => (
-					<div key={index}>
-						<h3 className="text-secondary text-xs leading-[18px] uppercase">
-							{detailItem.labels}
-						</h3>
-						<div className="text-sm leading-[21px]">
-							{detailItem.content ? (
+				<DetailInfor label="Nghệ sĩ">
+					{data.artists &&
+						data.artists.map((content, index) => (
+							<Fragment key={index}>
+								{index ? ", " : ""}
 								<a
-									href="#"
-									className="text-primary hover:text-link-hover">
-									{detailItem.content}
+									key={index}
+									href="/"
+									className=" hover:text-link-hover">
+									{content.name}
 								</a>
-							) : (
-								<span className="text-primary">Unknow</span>
-							)}
-						</div>
-					</div>
-				))}
+							</Fragment>
+						))}
+				</DetailInfor>
+
+				{data.album && (
+					<DetailInfor label="Album">
+						<a href="/" className=" hover:text-link-hover">
+							{data.album.title}
+						</a>
+					</DetailInfor>
+				)}
+				{data.composers && (
+					<DetailInfor label="Sáng tác">
+						{data.composers.map((content, index) => (
+							<Fragment key={index}>
+								{index ? ", " : ""}
+								<a
+									key={index}
+									href="/"
+									className=" hover:text-link-hover">
+									{content.name}
+								</a>
+							</Fragment>
+						))}
+					</DetailInfor>
+				)}
+				{data.genres && (
+					<DetailInfor label="Thể loại">
+						{data.genres.map((content, index) => (
+							<Fragment key={index}>
+								{index ? ", " : ""}
+								<a
+									key={index}
+									href="/"
+									className=" hover:text-link-hover">
+									{content.name}
+								</a>
+							</Fragment>
+						))}
+					</DetailInfor>
+				)}
+				{data.distributor && (
+					<DetailInfor label="Cung cấp bởi">
+						<p href="/">{data.distributor}</p>
+					</DetailInfor>
+				)}
 			</div>
 		</div>
 	)

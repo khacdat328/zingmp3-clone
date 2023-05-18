@@ -1,12 +1,12 @@
-import * as request from "~/utils/httpRequest";
+import * as request from "~/utils/httpRequest"
 
-export const NewRelease = async (limit) => {
+export const NewRelease = async (sid) => {
 	try {
-		const res = await request.get("/songs/category/new-music", {
-			params: { limit },
-		});
-		return res;
+		const res = await request.get("/songs", {
+			params: { id: sid },
+		})
+		return res
 	} catch (e) {
-		return e;
+		return e
 	}
-};
+}

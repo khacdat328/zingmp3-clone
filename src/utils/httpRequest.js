@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseURL = "http://musiclovers.ap-1.evennode.com";
+export const baseURL = "http://localhost:5000/api";
 const request = axios.create({ baseURL });
 export const get = async (url, option = {}) => {
 	try {

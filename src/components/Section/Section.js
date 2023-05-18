@@ -1,9 +1,9 @@
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-function Section({ title, children, seeAll }) {
+function Section({ title, children, seeAll, className = "mt-12" }) {
 	return (
-		<div className="mt-12">
+		<div className={className}>
 			<div>
 				{title && (
 					<h3 className="relative flex justify-between items-center mb-5 text-[20px] font-bold text-primary capitalize">

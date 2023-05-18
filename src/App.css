@@ -29,10 +29,15 @@
 			#fff 25%,
 			#fff
 		);
+
+
 	}
 	.square-40{
 		width: 40px;
 		height: 40px;
+	}
+	.text-stroke{
+		-webkit-text-stroke: 1px #fff;
 	}
 }
 body ::-webkit-scrollbar {
