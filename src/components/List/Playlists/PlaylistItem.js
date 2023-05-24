@@ -22,7 +22,8 @@ const PlaylistItem = ({ data, hasArtistList }) => {
 									className="text-white w-[30px] h-auto"
 								/>
 							</button>
-							<button className="w-full h-full">
+							<button
+								className="w-full h-full">
 								<FontAwesomeIcon
 									icon={faCirclePlay}
 									className="text-white w-[45px] h-auto "
@@ -56,7 +57,11 @@ const PlaylistItem = ({ data, hasArtistList }) => {
 										.map((artist, index) => (
 											<Fragment key={index}>
 												{index ? ", " : ""}
-												<a href="/" className="hover:text-link-hover  hover:underline">{artist.name}</a>
+												<a
+													href="/"
+													className="hover:text-link-hover  hover:underline">
+													{artist.name}
+												</a>
 												{index === 2 && "..."}
 											</Fragment>
 										))

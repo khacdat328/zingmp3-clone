@@ -49,7 +49,9 @@ function NewRelease({ data }) {
 			<div className="flex flex-wrap w-auto -mx-3.5 ">
 				{songNation &&
 					songNation
-						.map((item, index) => <SongItem key={index} data={item} />)
+						.map((item, index) => (
+							<SongItem key={index} data={item} playlist={songNation} />
+						))
 						.filter((item, index) => index < 12)}
 			</div>
 		</div>

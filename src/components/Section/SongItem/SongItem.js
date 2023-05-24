@@ -3,15 +3,18 @@ import { faEllipsis, faPlay } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Tippy from "@tippyjs/react/headless"
 import { followCursor } from "tippy.js"
+import { Link } from "react-router-dom"
+import { useDispatch } from "react-redux"
 import * as SongInfor from "~/ApiService/InforSong"
 import Image from "~/components/Image"
 import Popper from "~/components/Popper"
 import SongMenu from "./SongMenu"
 import { getDateFormat } from "~/Feature/GlobalFeature"
 import { MainProvider } from "~/Layout/MainLayout"
-import { Link } from "react-router-dom"
+import songSlice from "~/redux/slice/songSlice"
 
-function SongItem({ data }) {
+function SongItem({ data, playlist }) {
+	const dispatch = useDispatch()
 	const { divRef } = useContext(MainProvider)
 	const [songInfor, setSongInfor] = useState([])
 	const [active, setActive] = useState(false)
@@ -24,7 +27,7 @@ function SongItem({ data }) {
 			</Popper>
 		)
 	}
-	const options = { day: "numeric", month: "numeric"}
+	const options = { day: "numeric", month: "numeric" }
 	const releaseDate = getDateFormat(data.releaseDate, options)
 	const toggleActive = () => setActive(!active)
 	const hideTooltip = () => {
@@ -46,7 +49,7 @@ function SongItem({ data }) {
 			setSongInfor(fetchData)
 		}
 		fetchSongInfor()
-	}, [data.encodeId])	
+	}, [data.encodeId])
 
 	return (
 		<div className="group w-1/3 px-3.5">
@@ -67,7 +70,14 @@ function SongItem({ data }) {
 							className={`absolute top-0 left-0 w-full h-full flex items-center justify-center group-hover:visible bg-[#00000080] ${
 								active ? `visible` : `invisible`
 							}`}>
-							<button className="w-full h-full">
+							<button
+								className="w-full h-full"
+								onClick={() => {
+									dispatch(songSlice.actions.setPlaylist(playlist))
+									dispatch(
+										songSlice.actions.setSongToPlay(data.encodeId)
+									)
+								}}>
 								<FontAwesomeIcon icon={faPlay} className="text-white" />
 							</button>
 						</div>

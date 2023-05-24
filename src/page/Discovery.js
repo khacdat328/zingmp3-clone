@@ -55,7 +55,7 @@ function Discovery() {
 						<PlaylistBanner data={weekEndPlaylist.items} />
 					</Section>
 
-					<Section>
+					<Section title={trendingArtist.title}>
 						<PlaylistBanner data={trendingArtist.items} />
 					</Section>
 
