@@ -6,10 +6,10 @@ function LivestreamRadio({ data }) {
 		<div>
 			<div className="relative">
 				<figure className="rounded-full overflow-hidden">
-					<img className="w-full" src={program.thumbnail} alt="" />
+					<img className="w-full" src={program?.thumbnail} alt="" />
 				</figure>
 				<figure className="absolute top-[85%] left-[85%] -translate-x-[60%] -translate-y-[60%] z-10 w-[36%] rounded-full overflow-hidden border-2 border-solid border-layout-bg">
-					<img className="" src={host.thumbnail} alt="" />
+					<img className="" src={host?.thumbnail} alt="" />
 				</figure>
 				<LiveTag
 					className={

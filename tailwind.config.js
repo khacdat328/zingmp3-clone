@@ -13,16 +13,18 @@ module.exports = {
 				bottomShadow: "0 10px 10px 9px blue",
 				headerBottom: "0 3px 5px rgb(0 0 0 / 0.1)",
 				popper: "0 2px 5px rgb( 0 0 0 / 0.2)",
+				'right-sidebar': '0 1px 0 rgba(0,0,0,0.3),0 1px 6px rgba(0,0,0,0.3),inset 0 1px 1px rgba(25,255,255,0.05)'
 			},
 			colors: {
-				'layout-bg': "#170f23",
-				"purplePrimary": "#9b4de0",
-				'primary': "#FFFFFF",
-				'secondary': "#ffffff80",
-				'alpha': "#ffffff1a",
+				"right-sidebar": "#120822",
+				"layout-bg": "#170f23",
+				purplePrimary: "#9b4de0",
+				primary: "#FFFFFF",
+				secondary: "#ffffff80",
+				alpha: "#ffffff1a",
 				"link-hover": "#c273ed",
-				'primaryBg': "#34224f",
-				'player-bg': "#130c1c"
+				primaryBg: "#34224f",
+				"player-bg": "#130c1c",
 			},
 		},
 	},
@@ -54,9 +56,21 @@ module.exports = {
 				}
 			)
 		}),
+		plugin(function ({ addVariant }) {
+			addVariant("slider-thumb", [
+				"&::-webkit-slider-thumb",
+				"&::slider-thumb",
+			])
+			addVariant ('runnable-track',[
+				"&::-webkit-slider-runnable-track",
+				"&::runnable-track",
+			])
+		}),
+
 		require("tailwindcss/plugin")(({ addVariant }) => {
 			addVariant("foo", "&:has(button:focus)")
 		}),
+
 		require("@tailwindcss/line-clamp"),
 	],
 }

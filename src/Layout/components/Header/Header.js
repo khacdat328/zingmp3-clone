@@ -13,14 +13,13 @@ import Button from "~/components/Button"
 import { MainProvider } from "~/Layout/MainLayout"
 
 const blurStyle = `bg-[var(--layout-alpha)] backdrop-blur-[50px] shadow-headerBottom`
-
 function Header({ ...props }) {
 	const searchRef = useRef()
-	const { divRef } = useContext(MainProvider)
+	const { divRef, showRightSidebar: isShowSidebar } = useContext(MainProvider)
 	const navigate = useNavigate()
 	const [search, setSearch] = useState("")
 	const [blurHeader, setBlurHeader] = useState(false)
-	
+
 	const handleSearch = (e) => {
 		const searchValue = e.target.value
 		if (!searchValue.startsWith(" ")) {
@@ -40,13 +39,12 @@ function Header({ ...props }) {
 		parentdiv.addEventListener("scroll", handleBodyScroll)
 		return () => parentdiv.removeEventListener("scroll", handleBodyScroll)
 	}, [])
-
 	return (
 		<header className="relative h-[70px] flex items-center z-10">
 			<div
-				className={`fixed left-[70px] lg:left-[240px] right-0 mr-[6px] py-[15px] pl-[60px] pr-[54px] flex items-center justify-between  text-[var(--text-secondary)] ${
+				className={`fixed left-[70px] lg:left-[240px] right-0 mr-[6px] py-[15px] pl-[60px] pr-[54px] flex items-center justify-between  text-[var(--text-secondary)] transition-all duration-700 ${
 					blurHeader && blurStyle
-				}`}>
+				} ${isShowSidebar && `mr-[330px]`}`}>
 				<div className="flex flex-grow">
 					<button className="text-[24px]" onClick={() => navigate(-1)}>
 						<FontAwesomeIcon icon={faArrowLeft} className="mr-[20px]" />

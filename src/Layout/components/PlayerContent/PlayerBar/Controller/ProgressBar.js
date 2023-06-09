@@ -1,18 +1,17 @@
 import { useState, useEffect, useRef } from "react"
 import moment from "moment"
-function ProgressBar({ audioRef, songInfor, isPlaying }) {
+let audioProgress
+function ProgressBar({ audioRef, songInfor, isPlaying , currTime, changeCurrTime}) {
 	const progressRef = useRef()
 	const barContainerRef = useRef()
-	const [currTime, setCurrTime] = useState(0)
 	useEffect(() => {
-		let audioProgress
 		if (songInfor && isPlaying) {
 			audioProgress = setInterval(() => {
 				var currentProgress = Math.round(
 					100 - (audioRef.current.currentTime / songInfor.duration) * 100
 				)
 				progressRef.current.style.cssText = `right: ${currentProgress}%`
-				setCurrTime(audioRef.current.currentTime)
+				changeCurrTime(audioRef.current.currentTime)
 			}, 200)
 		} else {
 			audioProgress && clearInterval(audioProgress)
@@ -21,14 +20,18 @@ function ProgressBar({ audioRef, songInfor, isPlaying }) {
 	}, [songInfor, isPlaying])
 
 	useEffect(() => {
-		setCurrTime(0)
+		changeCurrTime(0)
 	}, [songInfor])
 	const handleClickProgressBar = (e) => {
-		// console.log(e.clientX)
 		const { left, width } = barContainerRef.current.getBoundingClientRect()
 		const percent = (e.clientX - left) / width
 		const timeOnClick = Math.round(percent * songInfor.duration)
 		audioRef.current.currentTime = timeOnClick
+		var currentProgress = Math.round(
+			100 - (audioRef.current.currentTime / songInfor.duration) * 100
+		)
+		progressRef.current.style.cssText = `right: ${currentProgress}%`
+		changeCurrTime(audioRef.current.currentTime)
 	}
 	return (
 		<div className="flex w-full mb-[5px]">

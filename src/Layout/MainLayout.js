@@ -1,13 +1,15 @@
 import LeftSidebar from "./components/LeftSidebar"
 import Header from "./components/Header"
-import PlayerBar from "./components/PlayerBar"
+// import PlayerBar from "./components/PlayerBar"
 import { useRef, useState, useMemo, useEffect, createContext } from "react"
 import _ from "lodash"
+// import RightSidebar from "./components/RightSidebar/RightSidebar"
+import PlayerContent from "./components/PlayerContent/PlayerContent"
 export const MainProvider = createContext()
 
 function MainLayout({ children }) {
 	const divRef = useRef()
-
+	console.log("render")
 	return (
 		<MainProvider.Provider value={{ divRef }}>
 			<div>
@@ -16,8 +18,8 @@ function MainLayout({ children }) {
 
 					<div
 						ref={divRef}
-						className="flex-1 h-[var(--main-height)] overflow-y-scroll">
-						<Header/>
+						className={`flex-1 h-[var(--main-height)] overflow-y-scroll `}>
+						<Header />
 						<div className="w-full px-[60px]">
 							<div className="w-full 2xl:max-w-[1450px] mx-auto">
 								{children}
@@ -25,7 +27,7 @@ function MainLayout({ children }) {
 						</div>
 					</div>
 				</div>
-				<PlayerBar />
+				<PlayerContent />
 			</div>
 		</MainProvider.Provider>
 	)

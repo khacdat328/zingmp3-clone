@@ -11,11 +11,19 @@ import Popper from "~/components/Popper"
 import SongMenu from "./SongMenu"
 import { getDateFormat } from "~/Feature/GlobalFeature"
 import { MainProvider } from "~/Layout/MainLayout"
-import songSlice from "~/redux/slice/songSlice"
+import songSlice from "~/redux/slice/playerSlice"
 
-function SongItem({ data, playlist }) {
+function SongItem({
+	data,
+	parentRef,
+	audioID,
+	playlist,
+	largeThumbnail = true,
+	releaseDates = false,
+	className,
+}) {
 	const dispatch = useDispatch()
-	const { divRef } = useContext(MainProvider)
+	// const { divRef } = useContext(MainProvider)
 	const [songInfor, setSongInfor] = useState([])
 	const [active, setActive] = useState(false)
 	const tooltip = useRef(null)
@@ -30,6 +38,7 @@ function SongItem({ data, playlist }) {
 	const options = { day: "numeric", month: "numeric" }
 	const releaseDate = getDateFormat(data.releaseDate, options)
 	const toggleActive = () => setActive(!active)
+
 	const hideTooltip = () => {
 		if (tooltip.current._tippy.popperInstance) {
 			tooltip.current._tippy.hide()
@@ -38,9 +47,11 @@ function SongItem({ data, playlist }) {
 	}
 
 	useEffect(() => {
-		const parentdiv = divRef.current
-		parentdiv.addEventListener("scroll", hideTooltip)
-		return () => parentdiv.removeEventListener("scroll", hideTooltip)
+		if (parentRef) {
+			const parent = parentRef.current
+			parent.addEventListener("scroll", hideTooltip)
+			return () => parent.removeEventListener("scroll", hideTooltip)
+		}
 	}, [])
 
 	useEffect(() => {
@@ -51,16 +62,37 @@ function SongItem({ data, playlist }) {
 		fetchSongInfor()
 	}, [data.encodeId])
 
+	var localAudioData = {
+		audioID: data.encodeId,
+		playlist: playlist,
+	}
+	const setSongToLocalStrg = () => {
+		window.localStorage.setItem(
+			"localAudioData",
+			JSON.stringify(localAudioData)
+		)
+	}
+	const handlePlaySong = () => {
+		dispatch(songSlice.actions.setPlaylist(playlist))
+		dispatch(songSlice.actions.setPlayStatus(true))
+		dispatch(songSlice.actions.setSongToPlay(data.encodeId))
+		setSongToLocalStrg()
+	}
 	return (
-		<div className="group w-1/3 px-3.5">
+		<div className={`group ${className}`}>
 			<div
 				className={`group flex items-center p-2.5 rounded-[4px] group-hover:bg-alpha ${
-					active && `bg-alpha`
+					(active && `bg-alpha`) ||
+					(audioID === data.encodeId && `bg-purplePrimary`)
 				}`}>
 				<div className="flex flex-auto mr-2.5 overflow-hidden">
 					<div className="relative shrink-0 rounded-[4px] overflow-hidden mr-2.5">
-						<figure className="w-[60px] h-auto bg-white">
-							<Image className="w-[60px]" src={data.thumbnailM} alt="" />
+						<figure className="bg-white">
+							<Image
+								className={largeThumbnail ? `w-[60px]` : "w-[40px]"}
+								src={data.thumbnailM}
+								alt=""
+							/>
 						</figure>
 						<div
 							className={`absolute top-0 left-0 w-full h-full  group-hover:visible bg-[#00000080] ${
@@ -70,14 +102,7 @@ function SongItem({ data, playlist }) {
 							className={`absolute top-0 left-0 w-full h-full flex items-center justify-center group-hover:visible bg-[#00000080] ${
 								active ? `visible` : `invisible`
 							}`}>
-							<button
-								className="w-full h-full"
-								onClick={() => {
-									dispatch(songSlice.actions.setPlaylist(playlist))
-									dispatch(
-										songSlice.actions.setSongToPlay(data.encodeId)
-									)
-								}}>
+							<button className="w-full h-full" onClick={handlePlaySong}>
 								<FontAwesomeIcon icon={faPlay} className="text-white" />
 							</button>
 						</div>
@@ -101,9 +126,11 @@ function SongItem({ data, playlist }) {
 								</Fragment>
 							))}
 						</h3>
-						<div className="text-[12px] text-secondary mt-[3px]">
-							<span>{releaseDate}</span>
-						</div>
+						{releaseDates && (
+							<div className="text-[12px] text-secondary mt-[3px]">
+								<span>{releaseDate}</span>
+							</div>
+						)}
 					</div>
 				</div>
 

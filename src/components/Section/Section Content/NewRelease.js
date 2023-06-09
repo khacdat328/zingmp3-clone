@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import SongItem from "../SongItem"
+import { MainProvider } from "~/Layout/MainLayout"
 
 const activeButton = "bg-[var(--purple-primary)] border-transparent"
 function NewRelease({ data }) {
+	const { divRef } = useContext(MainProvider)
+
 	const SongNational = (e) => {
 		const National_map = {
 			all: data.items.all,
@@ -50,7 +53,14 @@ function NewRelease({ data }) {
 				{songNation &&
 					songNation
 						.map((item, index) => (
-							<SongItem key={index} data={item} playlist={songNation} />
+							<SongItem
+								className="w-1/3 px-3.5"
+								parentRef={divRef}
+								key={index}
+								data={item}
+								playlist={songNation}
+								releaseDates={true}
+							/>
 						))
 						.filter((item, index) => index < 12)}
 			</div>

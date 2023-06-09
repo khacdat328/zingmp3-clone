@@ -15,9 +15,24 @@
 	--layout-alpha: rgb(23, 15, 35, 0.8);
 }
 @layer base {
+	*{
+		outline: none;
+	}
 	html {
 		font-family: Inter, system-ui, sans-serif;
 	}
+	body ::-webkit-scrollbar {
+		width: 6px;
+	}
+	body ::-webkit-scrollbar-thumb {
+		border-radius: 4px;
+		-webkit-box-shadow: inset 0 0 6px #ffffff4c;
+	}
+	body ::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset #fff;
+		border-radius: 4px;
+	}
+	
 }
 
 @layer utilities {
@@ -29,8 +44,6 @@
 			#fff 25%,
 			#fff
 		);
-
-
 	}
 	.square-40{
 		width: 40px;
@@ -39,16 +52,5 @@
 	.text-stroke{
 		-webkit-text-stroke: 1px #fff;
 	}
-}
-body ::-webkit-scrollbar {
-	width: 6px;
-}
 
-body ::-webkit-scrollbar-thumb {
-	border-radius: 4px;
-	-webkit-box-shadow: inset 0 0 6px #ffffff4c;
-}
-body ::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset #fff;
-	border-radius: 4px;
 }
